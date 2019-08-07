@@ -13,11 +13,12 @@ gem 'scope_sql_counter'
 ```
 
 ## Usage
-Unfortunately, this gem heavily depends on ActiveRecord. Well, since most
-rails app use it, you are probably safe?
+Unfortunately, this gem heavily relies on ActiveRecord. Well, since most
+rails app use it, you are probably safe? Also, please make sure that all your
+associations have indices in order to maximize the speed of your query.
 
 ### Add the scopes
-So let's say you have a User model that has_many :blogs association.
+So let's say your User model have a `has_many :blogs` association.
 Use the ActiveRecord extension method to generate the scope:
 ```ruby
 class User < ActiveRecord::Base

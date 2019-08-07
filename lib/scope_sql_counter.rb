@@ -4,10 +4,10 @@ require 'scope_sql_counter/orm/active_record'
 unless defined?(ActiveRecord)
   class ActiveRecordDoesNotExist < StandardError; end
 
-  raise ActiveRecordDoesNotExist.new('Sorry, this gem only supports active record for now.')
+  raise ActiveRecordDoesNotExist.new('Sorry, this gem only supports active record right now.')
 end
-
-ActiveRecord::Base.extend(ScopeSqlCounter::Orm::ActiveRecord)
 
 module ScopeSqlCounter
 end
+
+ActiveRecord::Base.extend(ScopeSqlCounter::Orm::ActiveRecord)
