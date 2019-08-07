@@ -4,9 +4,9 @@ module ScopeSqlCounter
   class Syntax
     COUNTER_SQL_QUERY = <<-SQL
       (
-        SELECT COUNT(`:target`.id)
-        FROM `:target`
-        WHERE `:target`.`:foreign_key` = `:context`.id
+        SELECT COUNT(:target.id)
+        FROM :target
+        WHERE :target.:foreign_key = :context.id
       ) AS :alias
     SQL
 
@@ -24,7 +24,7 @@ module ScopeSqlCounter
                                .gsub(':alias', "#{association.table_name}_count")
                                .squish
 
-      if context.select_values.blank?
+      if !context.respond_to?(:select_values) || context.select_values.blank?
         ["#{context.table_name}.*", query].join(', ')
       else
         query
