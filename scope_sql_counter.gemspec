@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = 'Don\'t want to use counter cache anymore? Achieve it with plain SQL query instead!'
   s.description = <<-DESC
     A gem that provides helper to achieve association counting without hassle.
-    It provides you readonly data of the association without executing n+1 queries!
+    It provides you readonly data inside your ActiveRecord model without executing n+1 queries!
   DESC
   s.authors     = ['Harvey Ico']
   s.email       = 'godstrikerharvey@gmail.com'

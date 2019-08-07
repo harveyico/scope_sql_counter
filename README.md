@@ -1,9 +1,9 @@
 # Scope SQL Counter
 An ActiveRecord extension that helps you count association using SQL.
 
-Since the association counting was computed within a single query, it's better
+Since the association counting was computed within a single query, it's at least better
 than doing n+1 queries. The main idea is that you don't need to use counter cache library
-and migrate new columns which is pretty annoying.
+that migrate new columns, and use 3rd party app which is pretty annoying.
 
 ## Installation
 Add this line to your application's Gemfile:
@@ -14,21 +14,21 @@ gem 'scope_sql_counter'
 
 ## Usage
 Unfortunately, this gem heavily depends on ActiveRecord. Well, since most
-rails app use it, so I think you're safe?
+rails app use it, you are probably safe?
 
 ### Add the scopes
-Let's say you have a User model that has_many blogs association.
-Use the extension method to generate the scope:
+So let's say you have a User model that has_many :blogs association.
+Use the ActiveRecord extension method to generate the scope:
 ```ruby
 class User < ActiveRecord::Base
-  has_many :blogs
+  has_many :blogs, dependent: :destroy
 
                     # scope name      # association name
   scope_sql_counter :with_blog_count, :blogs
 end
 ```
 
-This will define a scope `User.with_blog_count` on your model. And if you call it:
+This will create a scope `User.with_blog_count` on your model. And if you call it:
 ```ruby
 irb: User.with_blog_count
 => User Load (0.8ms)
@@ -37,8 +37,8 @@ irb: User.with_blog_count
 ```
 
 As you can see, when the query executes, it sets an alias `AS blogs_count`.
-This should be available now as a readonly attribute on your
-ActiveRecord models. For example:
+This alias should be available as a readonly attribute on your
+ActiveRecord model instance. For example:
 
 ```ruby
 users = User.with_blog_count
