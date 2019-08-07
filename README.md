@@ -91,12 +91,15 @@ irb: users.first.posts_count # => 0
 
 2. `conditions` . For example:
 ```ruby
-scope_sql_counter :with_published_blog_count, :blogs, conditions: 'blogs.published_at IS NOT NULL', count_alias: :published_blog_count
+scope_sql_counter :with_published_blog_count, :blogs,
+                  conditions: 'blogs.published_at IS NOT NULL',
+                  count_alias: :published_blog_count
 ```
 ```ruby
 irb: users = User.with_blog_count
 => User Load (0.8ms)
-   SELECT  users.*, ( SELECT COUNT(blogs.id) FROM blogs WHERE blogs.user_id = users.id AND blogs.published_at IS NOT NULL) AS published_blog_count
+   SELECT  users.*, ( SELECT COUNT(blogs.id) FROM blogs WHERE blogs.user_id = users.id
+                        AND blogs.published_at IS NOT NULL) AS published_blog_count
      FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
 
 irb: users.first.published_blog_count # => 0
