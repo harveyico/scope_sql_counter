@@ -106,6 +106,9 @@ irb: users = User.with_blog_count
 irb: users.first.published_blog_count # => 0
 ```
 
+### has_many :through and has_and_belongs_to_many
+Dont' worry! It fully supports many to many relationships just fine!
+
 ## Contributing
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
