@@ -73,12 +73,14 @@ end
 
 ### Additional configurations
 `count_alias`: Sets the alias name for the counter instead of the default
+
 `conditions`: Adds more condition on your scope counter instead of plain association call
 
 1. `count_alias` . For example:
 ```ruby
 scope_sql_counter :with_blog_count, :blogs, count_alias: :posts_count
-
+```
+```ruby
 irb: users = User.with_blog_count
 => User Load (0.8ms)
    SELECT  users.*, ( SELECT COUNT(blogs.id) FROM blogs WHERE blogs.user_id = users.id ) AS posts_count
@@ -90,7 +92,8 @@ irb: users.first.posts_count # => 0
 2. `conditions` . For example:
 ```ruby
 scope_sql_counter :with_published_blog_count, :blogs, conditions: 'blogs.published_at IS NOT NULL', count_alias: :published_blog_count
-
+```
+```ruby
 irb: users = User.with_blog_count
 => User Load (0.8ms)
    SELECT  users.*, ( SELECT COUNT(blogs.id) FROM blogs WHERE blogs.user_id = users.id AND blogs.published_at IS NOT NULL) AS published_blog_count
@@ -98,3 +101,15 @@ irb: users = User.with_blog_count
 
 irb: users.first.published_blog_count # => 0
 ```
+
+## Contributing
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Add unit test
+4. Commit your changes (`git commit -am 'Add some feature'`)
+5. Push to the branch (`git push origin my-new-feature`)
+6. Create new Pull Request
+
+
+## MIT
+**scope_sql_counter** © 2019+, Harvey Ico. Released under the [MIT](http://mit-license.org/) License.
