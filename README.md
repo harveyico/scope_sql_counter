@@ -3,7 +3,7 @@ An ActiveRecord extension that helps you count association using SQL.
 
 Since the association counting was computed within a single query, it's at least better
 than doing n+1 queries. The main idea is that you don't need to use counter cache library
-that migrate new columns, and use 3rd party app which is pretty annoying.
+that migrate new columns, use 3rd party app and stuff.
 
 ## Installation
 Add this line to your application's Gemfile:
