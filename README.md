@@ -61,7 +61,7 @@ class User < ActiveRecord::Base
   }
 end
 
-# Yuck, it's dirty? Then do it like this:
+# But.. it doesn't look good? Then do it like this:
 
 class User < ActiveRecord::Base
  scope_sql_counter :with_blog_count, :blogs
@@ -69,4 +69,32 @@ class User < ActiveRecord::Base
 
  scope :with_multiple_count, -> { with_blog_count.with_comment_count }
 end
+```
+
+### Additional configurations
+`count_alias`: Sets the alias name for the counter instead of the default
+`conditions`: Adds more condition on your scope counter instead of plain association call
+
+1. `count_alias` . For example:
+```ruby
+scope_sql_counter :with_blog_count, :blogs, count_alias: :posts_count
+
+irb: users = User.with_blog_count
+=> User Load (0.8ms)
+   SELECT  users.*, ( SELECT COUNT(blogs.id) FROM blogs WHERE blogs.user_id = users.id ) AS posts_count
+     FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+
+irb: users.first.posts_count # => 0
+```
+
+2. `conditions` . For example:
+```ruby
+scope_sql_counter :with_published_blog_count, :blogs, conditions: 'blogs.published_at IS NOT NULL', count_alias: :published_blog_count
+
+irb: users = User.with_blog_count
+=> User Load (0.8ms)
+   SELECT  users.*, ( SELECT COUNT(blogs.id) FROM blogs WHERE blogs.user_id = users.id AND blogs.published_at IS NOT NULL) AS published_blog_count
+     FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
+
+irb: users.first.published_blog_count # => 0
 ```
