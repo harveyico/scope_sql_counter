@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.authors     = ['Harvey Ico']
   s.email       = 'godstrikerharvey@gmail.com'
   s.files       = `git ls-files`.split($/)
-  s.homepage    = 'https://rubygems.org/gems/scope-sql-counter'
+  s.homepage    = 'https://github.com/harveyico/scope_sql_counter'
   s.license     = 'MIT'
 
   s.require_paths = ['lib']
