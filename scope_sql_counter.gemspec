@@ -4,10 +4,10 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require 'version'
+require 'scope_sql_counter/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'garden'
+  s.name        = 'scope_sql_counter'
   s.version     = ScopeSqlCounter::VERSION
   s.date        = '2019-08-02'
   s.summary     = 'Don\'t want to use counter cache anymore? Achieve it with plain SQL query instead!'
@@ -26,4 +26,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'activerecord', '~> 5.2.3'
   s.add_development_dependency 'bundler', '~> 2.0.2'
   s.add_development_dependency 'rake', '~> 12.3.3'
+  s.add_development_dependency 'rspec', '~> 3.8.0'
 end
