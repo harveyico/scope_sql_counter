@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
 end
 ```
 
-This will produce a scope `User.with_blog_count` on your model. And if you call it:
+This will define a scope `User.with_blog_count` on your model. And if you call it:
 ```ruby
 irb: User.with_blog_count
 => User Load (0.8ms)
@@ -37,7 +37,7 @@ irb: User.with_blog_count
 ```
 
 As you can see, when the query executes, it sets an alias `AS blogs_count`.
-This should be available now available as a readonly attribute on your
+This should be available now as a readonly attribute on your
 ActiveRecord models. For example:
 
 ```ruby
@@ -50,7 +50,7 @@ user.blogs_count # => 8
 ## Multiple scopes
 There are times you may want to fetch multiple counter on your associations.
 You can achieve this by doing:
-```
+```ruby
 class User < ActiveRecord::Base
   has_many :blogs
   has_many :comments
@@ -61,11 +61,11 @@ class User < ActiveRecord::Base
   }
 end
 
-# or do it like this:
+# Yuck, it's dirty? Then do it like this:
 
 class User < ActiveRecord::Base
  scope_sql_counter :with_blog_count, :blogs
- scope_sql_count :with_comment_count, :comments
+ scope_sql_counter :with_comment_count, :comments
 
  scope :with_multiple_count, -> { with_blog_count.with_comment_count }
 end
