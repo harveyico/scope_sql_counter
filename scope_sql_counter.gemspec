@@ -23,6 +23,8 @@ Gem::Specification.new do |s|
 
   s.require_paths = ['lib']
 
+  s.required_ruby_version = '>= 2.1.0'
+
   s.add_development_dependency 'activerecord', '~> 5.2.3'
   s.add_development_dependency 'bundler', '~> 2.0.2'
   s.add_development_dependency 'rake', '~> 12.3.3'
