@@ -11,11 +11,11 @@ module ScopeSqlCounter
       ) AS :alias
     SQL
 
-    attr_reader :context, :association, :conditions, :count_alias
+    attr_reader :context, :association_key, :conditions, :count_alias
 
     def initialize(context:, association_key:, conditions: nil, count_alias: nil)
       @context = context
-      @association = context.reflect_on_association(association_key)
+      @association_key = association_key
       @conditions = conditions
       @count_alias = count_alias
     end
@@ -30,8 +30,22 @@ module ScopeSqlCounter
 
     private
 
+    def association
+      reflection = context.reflect_on_association(association_key)
+
+      reflection.through_reflection || reflection
+    end
+
+    def association_table_name
+      if association.macro == :has_and_belongs_to_many
+        association.join_table
+      else
+        association.table_name
+      end
+    end
+
     def query
-      COUNTER_SQL_QUERY.gsub(':target', association.table_name)
+      COUNTER_SQL_QUERY.gsub(':target', association_table_name)
                        .gsub(':foreign_key', association.foreign_key)
                        .gsub(':context', context.table_name)
                        .gsub(':conditions', conditions_sql)
@@ -40,7 +54,7 @@ module ScopeSqlCounter
     end
 
     def count_alias_sql
-      count_alias.to_s.presence || "#{association.table_name}_count"
+      count_alias.to_s.presence || "#{association_key}_count"
     end
 
     def conditions_sql

@@ -7,6 +7,13 @@ class BlogTest
     def foreign_key
       'user_id'
     end
+
+    def macro
+      :has_many
+    end
+
+    def through_reflection
+    end
   end
 end
 
