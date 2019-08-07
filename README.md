@@ -62,7 +62,7 @@ class User < ActiveRecord::Base
   }
 end
 
-# But.. it doesn't look good? Then do it like this:
+# But.. it doesn't look good? Don't worry! We can make it cleaner:
 
 class User < ActiveRecord::Base
  scope_sql_counter :with_blog_count, :blogs
