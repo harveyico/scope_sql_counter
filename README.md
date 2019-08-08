@@ -97,7 +97,7 @@ scope_sql_counter :with_published_blog_count, :blogs,
                   count_alias: :published_blog_count
 ```
 ```ruby
-irb: users = User.with_blog_count
+irb: users = User.with_published_blog_count
 => User Load (0.8ms)
    SELECT  users.*, ( SELECT COUNT(blogs.id) FROM blogs WHERE blogs.user_id = users.id
                         AND blogs.published_at IS NOT NULL) AS published_blog_count
