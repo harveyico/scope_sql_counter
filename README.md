@@ -45,7 +45,6 @@ ActiveRecord model instance. For example:
 
 ```ruby
 users = User.with_blog_count
-user = users.first
 users.each do |user|
   user.blogs_count # => 8 // no further queries
 end
