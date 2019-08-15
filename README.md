@@ -5,6 +5,8 @@ Since the association counting was computed within a single query, it's at least
 than doing n+1 queries. The main idea is that you don't need to use counter cache library
 that migrate new columns, use 3rd party app and stuff.
 
+[rubygems](https://rubygems.org/gems/scope_sql_counter)
+
 ## Installation
 Add this line to your application's Gemfile:
 
@@ -31,7 +33,7 @@ end
 
 This will create a scope `User.with_blog_count` on your model. And if you call it:
 ```ruby
-irb: User.with_blog_count
+User.with_blog_count
 => User Load (0.8ms)
    SELECT  users.*, ( SELECT COUNT(blogs.id) FROM blogs WHERE blogs.user_id = users.id ) AS blogs_count
      FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
@@ -44,8 +46,9 @@ ActiveRecord model instance. For example:
 ```ruby
 users = User.with_blog_count
 user = users.first
-
-user.blogs_count # => 8
+users.each do |user|
+  user.blogs_count # => 8 // no further queries
+end
 ```
 
 ## Multiple scopes
@@ -82,12 +85,14 @@ end
 scope_sql_counter :with_blog_count, :blogs, count_alias: :posts_count
 ```
 ```ruby
-irb: users = User.with_blog_count
+users = User.with_blog_count
 => User Load (0.8ms)
    SELECT  users.*, ( SELECT COUNT(blogs.id) FROM blogs WHERE blogs.user_id = users.id ) AS posts_count
      FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
 
-irb: users.first.posts_count # => 0
+users.each do |user|
+  user.posts_count # => 0
+end
 ```
 
 2. `conditions` . For example:
@@ -97,13 +102,15 @@ scope_sql_counter :with_published_blog_count, :blogs,
                   count_alias: :published_blog_count
 ```
 ```ruby
-irb: users = User.with_published_blog_count
+users = User.with_published_blog_count
 => User Load (0.8ms)
    SELECT  users.*, ( SELECT COUNT(blogs.id) FROM blogs WHERE blogs.user_id = users.id
                         AND blogs.published_at IS NOT NULL) AS published_blog_count
      FROM "users" ORDER BY "users"."id" ASC LIMIT $1  [["LIMIT", 1]]
 
-irb: users.first.published_blog_count # => 0
+users.each do |user|
+  user.published_blog_count # => 0
+end
 ```
 
 ### has_many :through and has_and_belongs_to_many
